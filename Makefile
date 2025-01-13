@@ -1,14 +1,20 @@
-SRC_LIST = xml_string_codec.cpp
-OBJ_LIST = $(addprefix $(BUILD)/, $(SRC_LIST:.cpp=.o))
+# -*- MakeFile -*-
+
+SRC_LIST = \
+src/xml_string_codec.cpp
+
+OBJ_LIST = $(addprefix $(BUILD)/, $(notdir $(SRC_LIST:.cpp=.o)))
+vpath %.cpp $(sort $(dir $(SRC_LIST)))
 
 BUILD = build
 
-SRC_TEST_LIST = test.cpp
+SRC_TEST_LIST = \
+test/test.cpp
 
 LIBNAME = xml_string_codec
 LIBFILENAME = lib$(LIBNAME).a
 
-CFLAGS = -MMD -MP
+CFLAGS = -MMD -MP -Iinc
 
 CXX = g++
 CC = g++ -c
@@ -28,7 +34,7 @@ lib : $(BUILD)/$(LIBFILENAME)
 $(BUILD)/$(LIBFILENAME) : $(OBJ_LIST) | $(BUILD)
 	$(AR) rcs $(@) $(^)
 
-$(BUILD)/%.o : %.cpp makefile | $(BUILD)
+$(BUILD)/%.o : %.cpp Makefile | $(BUILD)
 	$(CC) $(CFLAGS) -o $(@) $(<)
 
 $(BUILD) :
